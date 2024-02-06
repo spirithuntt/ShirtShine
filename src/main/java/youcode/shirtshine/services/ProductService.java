@@ -1,4 +1,7 @@
 package youcode.shirtshine.services;
 
-public class ProductService {
+import org.springframework.stereotype.Component;
+
+@Component
+public interface ProductService {
 }

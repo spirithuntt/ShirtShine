@@ -5,7 +5,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import youcode.shirtshine.domain.enums.Role;
+
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,15 +25,15 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
-    private String created_at;
-    private String updated_at;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
     private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return role.getAuthorities().stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name())).toList();
     }
 
     @Override

@@ -1,4 +1,7 @@
 package youcode.shirtshine.repositories;
 
-public class ProductRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository {
 }

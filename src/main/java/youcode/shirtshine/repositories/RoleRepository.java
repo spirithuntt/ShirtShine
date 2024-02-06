@@ -2,13 +2,15 @@ package youcode.shirtshine.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import youcode.shirtshine.domain.User;
+import youcode.shirtshine.domain.Role;
 
 import java.util.Optional;
+
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Optional<User> findByEmail(String email);
-    boolean existsByEmail(String email);
+    Optional<Role> findByIsDefaultTrue();
 
+
+    Optional<Role> findByName(String name);
 }
