@@ -1,4 +1,4 @@
-package youcode.shirtshine.controllers.auth;
+package youcode.shirtshine.controller.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import youcode.shirtshine.dto.request.AuthenticationRequest;
 import youcode.shirtshine.dto.request.RegisterRequest;
 import youcode.shirtshine.dto.response.AuthenticationResponse;
-import youcode.shirtshine.services.AuthenticationService;
+import youcode.shirtshine.service.AuthenticationService;
 
 @RestController
 @RequestMapping("/api/v1/auth")

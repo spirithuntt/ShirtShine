@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import youcode.shirtshine.domain.Authority;
 import youcode.shirtshine.domain.enums.AuthorityEnum;
-import youcode.shirtshine.repositories.AuthorityRepository;
+import youcode.shirtshine.repository.AuthorityRepository;
 
 import java.util.ArrayList;
 import java.util.List;

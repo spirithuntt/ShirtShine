@@ -1,12 +1,12 @@
-package youcode.shirtshine.services.impl;
+package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Authority;
-import youcode.shirtshine.repositories.AuthorityRepository;
-import youcode.shirtshine.services.AuthorityService;
+import youcode.shirtshine.repository.AuthorityRepository;
+import youcode.shirtshine.service.AuthorityService;
 
 import java.util.List;
 

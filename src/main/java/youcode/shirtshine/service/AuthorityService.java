@@ -1,4 +1,4 @@
-package youcode.shirtshine.services;
+package youcode.shirtshine.service;
 
 import org.springframework.stereotype.Component;
 import youcode.shirtshine.domain.Authority;

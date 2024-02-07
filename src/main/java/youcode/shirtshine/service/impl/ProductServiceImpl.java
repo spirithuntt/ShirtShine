@@ -1,4 +1,4 @@
-package youcode.shirtshine.services.impl;
+package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

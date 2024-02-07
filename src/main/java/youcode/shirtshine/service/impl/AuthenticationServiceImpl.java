@@ -1,4 +1,4 @@
-package youcode.shirtshine.services.impl;
+package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,10 +9,10 @@ import youcode.shirtshine.dto.request.AuthenticationRequest;
 import youcode.shirtshine.dto.request.RegisterRequest;
 import youcode.shirtshine.dto.response.AuthenticationResponse;
 import youcode.shirtshine.domain.User;
-import youcode.shirtshine.repositories.UserRepository;
-import youcode.shirtshine.services.AuthenticationService;
+import youcode.shirtshine.repository.UserRepository;
+import youcode.shirtshine.service.AuthenticationService;
 import youcode.shirtshine.security.JwtService;
-import youcode.shirtshine.services.RoleService;
+import youcode.shirtshine.service.RoleService;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {

@@ -1,4 +1,4 @@
-package youcode.shirtshine.services.impl;
+package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Authority;
 import youcode.shirtshine.domain.Role;
 import youcode.shirtshine.handler.request.CustomException;
-import youcode.shirtshine.repositories.RoleRepository;
-import youcode.shirtshine.services.AuthorityService;
-import youcode.shirtshine.services.RoleService;
+import youcode.shirtshine.repository.RoleRepository;
+import youcode.shirtshine.service.AuthorityService;
+import youcode.shirtshine.service.RoleService;
 
 import java.util.*;
 

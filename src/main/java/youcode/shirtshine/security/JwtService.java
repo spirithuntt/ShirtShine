@@ -63,7 +63,7 @@ public class JwtService {
     //for retrieveing any information from token we will need the secret key
     private Claims extractAllClaims(String token){
         return Jwts
-                .parser()
+                .parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
