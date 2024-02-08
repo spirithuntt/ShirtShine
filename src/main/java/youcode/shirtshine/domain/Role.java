@@ -18,9 +18,8 @@ public class Role {
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER )
     private List<Authority> authorities;
-
     private boolean isDefault;
 
 }

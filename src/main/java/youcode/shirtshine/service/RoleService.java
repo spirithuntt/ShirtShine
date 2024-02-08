@@ -10,7 +10,7 @@ import youcode.shirtshine.domain.Role;
 @Component
 public interface RoleService {
 
-    Role save(Role role);
+    Role save(Role role, boolean isSeed);
 
     Optional<Role> findDefaultRole();
 

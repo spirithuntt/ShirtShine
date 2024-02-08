@@ -2,17 +2,20 @@ package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Authority;
 import youcode.shirtshine.domain.Role;
+import youcode.shirtshine.domain.enums.AuthorityEnum;
 import youcode.shirtshine.handler.request.CustomException;
 import youcode.shirtshine.repository.RoleRepository;
 import youcode.shirtshine.service.AuthorityService;
 import youcode.shirtshine.service.RoleService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,15 +33,24 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role save(Role role){
-        List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        if (authorities.contains("CREATE_ROLE")){
-            if (findDefaultRole().isPresent() && role.isDefault()) throw new CustomException("There is already a default role", HttpStatus.UNAUTHORIZED);
-            role.setAuthorities(authorityService.getAllByName(role.getAuthorities().stream().map(authority -> authority.getName().toString()).toList()));
-            return roleRepository.save(role);
-        }else return null;
-    }
+    public Role save(Role role, boolean isSeed) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (!isSeed && authentication != null) {
+            List<String> authorities = authentication.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .toList();
+
+            if (!authorities.contains("CREATE_ROLE")) {
+                throw new CustomException("Insufficient authorities", HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        if (findDefaultRole().isPresent() && role.isDefault()) {
+            throw new CustomException("There is already a default role", HttpStatus.UNAUTHORIZED);
+        }
+        return roleRepository.save(role);
+    }
     @Override
     public Optional<Role> findDefaultRole(){
         return roleRepository.findByIsDefaultTrue();
@@ -51,8 +63,11 @@ public class RoleServiceImpl implements RoleService {
             Role role = roleRepository.findById(id).orElse(null);
             if (role != null){
                 Set<Authority> newAuthorities = new HashSet<>(role.getAuthorities());
-                newAuthorities.addAll(authorityService.getAllByName(authoritiesToGrant.stream().map(authority -> authority.getName().toString()).toList()));
-                List<Authority> authorityList = new ArrayList<>(newAuthorities);
+                newAuthorities.addAll(authorityService.getAllByName(
+                        authoritiesToGrant.stream()
+                                .map(authority -> authority.getName())
+                                .collect(Collectors.toList())
+                ));                List<Authority> authorityList = new ArrayList<>(newAuthorities);
                 role.setAuthorities(authorityList);
                 return roleRepository.save(role);
             }
@@ -68,8 +83,11 @@ public class RoleServiceImpl implements RoleService {
             Role role = roleRepository.findById(id).orElse(null);
             if (role != null){
                 List<Authority> currentAuthorities = role.getAuthorities();
-                currentAuthorities.removeAll(authorityService.getAllByName(authoritiesToRevoke.stream().map(authority -> authority.getName().toString()).toList()));
-                role.setAuthorities(currentAuthorities);
+                currentAuthorities.removeAll(authorityService.getAllByName(
+                        authoritiesToRevoke.stream()
+                                .map(authority -> authority.getName())
+                                .collect(Collectors.toList())
+                ));                role.setAuthorities(currentAuthorities);
                 return roleRepository.save(role);
             }
             return null;
