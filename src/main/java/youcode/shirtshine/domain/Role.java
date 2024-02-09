@@ -22,4 +22,5 @@ public class Role {
     private List<Authority> authorities;
     private boolean isDefault;
 
+
 }

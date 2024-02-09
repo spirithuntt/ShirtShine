@@ -8,11 +8,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Authority;
 import youcode.shirtshine.domain.Role;
-import youcode.shirtshine.domain.enums.AuthorityEnum;
 import youcode.shirtshine.handler.request.CustomException;
 import youcode.shirtshine.repository.RoleRepository;
 import youcode.shirtshine.service.AuthorityService;
 import youcode.shirtshine.service.RoleService;
+import youcode.shirtshine.service.UserService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +23,6 @@ public class RoleServiceImpl implements RoleService {
 
     private final AuthorityService authorityService;
     private final RoleRepository roleRepository;
-
     @Override
     public List<Role> getAll(){
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
@@ -57,18 +56,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role grantAuthorities(List<Authority> authoritiesToGrant, Long id){
+    public Role grantAuthorities(Long authorityId, Long roleId){
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("GRANT_AUTHORITY_TO_ROLE")){
-            Role role = roleRepository.findById(id).orElse(null);
-            if (role != null){
-                Set<Authority> newAuthorities = new HashSet<>(role.getAuthorities());
-                newAuthorities.addAll(authorityService.getAllByName(
-                        authoritiesToGrant.stream()
-                                .map(authority -> authority.getName())
-                                .collect(Collectors.toList())
-                ));                List<Authority> authorityList = new ArrayList<>(newAuthorities);
-                role.setAuthorities(authorityList);
+            Role role = roleRepository.findById(roleId).orElse(null);
+                Authority authority = authorityService.getById(authorityId).orElse(null);
+                if (role != null && authority != null){
+                List<Authority> currentAuthorities = role.getAuthorities();
+                currentAuthorities.add(authority);
+                role.setAuthorities(currentAuthorities);
                 return roleRepository.save(role);
             }
             return null;
@@ -76,22 +72,22 @@ public class RoleServiceImpl implements RoleService {
         return null;
     }
 
+
     @Override
-    public Role revokeAuthorities(List<Authority> authoritiesToRevoke, Long id){
+    public Role revokeAuthorities(Long authorityId, Long roleId){
         List<String> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         if (authorities.contains("REVOKE_AUTHORITY_FROM_ROLE")){
-            Role role = roleRepository.findById(id).orElse(null);
-            if (role != null){
+            Role role = roleRepository.findById(roleId).orElse(null);
+            Authority authority = authorityService.getById(authorityId).orElse(null);
+            if (role != null && authority != null){
                 List<Authority> currentAuthorities = role.getAuthorities();
-                currentAuthorities.removeAll(authorityService.getAllByName(
-                        authoritiesToRevoke.stream()
-                                .map(authority -> authority.getName())
-                                .collect(Collectors.toList())
-                ));                role.setAuthorities(currentAuthorities);
+                currentAuthorities = currentAuthorities.stream().filter(a -> !a.getId().equals(authorityId)).collect(Collectors.toList());
+                role.setAuthorities(currentAuthorities);
                 return roleRepository.save(role);
             }
             return null;
-        }return null;
+        }
+        return null;
     }
 
     @Override

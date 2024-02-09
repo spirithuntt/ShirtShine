@@ -31,5 +31,8 @@ public class AuthorityServiceImpl implements AuthorityService {
         return authorityRepository.findByName(authorityEnum);
     }
 
-
+    @Override
+    public Optional<Authority> getById(Long id) {
+        return authorityRepository.findById(id);
+    }
 }

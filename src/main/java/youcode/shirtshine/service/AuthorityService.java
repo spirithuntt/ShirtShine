@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface AuthorityService {
     List<Authority> getAllByName(List<AuthorityEnum> authorities);
     Optional<Authority> getByName(AuthorityEnum authorityEnum);
+
+    Optional<Authority> getById(Long id);
 }
 

@@ -24,8 +24,8 @@ public interface RoleService {
 
     List<Role> getAll();
 
-    Role grantAuthorities(List<Authority> authorities, Long id);
+    Role grantAuthorities(Long authorityId, Long roleId);
 
-    Role revokeAuthorities(List<Authority> authorities, Long id);
+    Role revokeAuthorities(Long authorityId, Long roleId);
 
 }
