@@ -63,6 +63,7 @@ public class RoleServiceImpl implements RoleService {
                 Authority authority = authorityService.getById(authorityId).orElse(null);
                 if (role != null && authority != null){
                 List<Authority> currentAuthorities = role.getAuthorities();
+                if (currentAuthorities.stream().anyMatch(a -> a.getId().equals(authorityId))) return null;
                 currentAuthorities.add(authority);
                 role.setAuthorities(currentAuthorities);
                 return roleRepository.save(role);
