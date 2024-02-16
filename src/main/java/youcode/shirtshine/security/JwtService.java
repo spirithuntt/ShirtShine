@@ -19,18 +19,18 @@ public class JwtService {
 
     private static final String SECRET_KEY = "6A335255515654786E676341565752614A586D423679644E65706F31484E4A6E";
 
-    //extract username from token
+    //!extract username from token
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    //its a generic method to extract any information from the token
+    //!its a generic method to extract any information from the token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    //generate token for user
+    //!generate token for user
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);
     }
@@ -60,7 +60,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    //for retrieveing any information from token we will need the secret key
+    //!for retrieveing any information from token we will need the secret key
     private Claims extractAllClaims(String token){
         return Jwts
                 .parserBuilder()
@@ -70,7 +70,7 @@ public class JwtService {
                 .getBody();
     }
 
-    //generate key
+    //!generate key
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);

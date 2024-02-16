@@ -11,5 +11,8 @@ import youcode.shirtshine.domain.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse{
+    private String name;
+    private String email;
     private String token;
+    private Role role;
 }
