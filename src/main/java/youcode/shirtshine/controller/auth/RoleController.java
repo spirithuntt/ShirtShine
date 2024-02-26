@@ -33,7 +33,7 @@ public class RoleController {
     public ResponseEntity<RoleResponseDTO> save(@RequestBody RoleRequestDTO roleToSave) {
         Role role = roleService.save(roleToSave.toRole(), false);
         if (role == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        else return new ResponseEntity<>(RoleResponseDTO.fromRole(role), HttpStatus.OK)
+        else return new ResponseEntity<>(RoleResponseDTO.fromRole(role), HttpStatus.OK);
     }
 
     @PutMapping("/grant_authorities")
