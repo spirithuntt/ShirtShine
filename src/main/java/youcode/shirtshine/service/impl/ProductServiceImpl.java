@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
-    private ProductResponseDTO convertToResponseDTO(Product product) {
+    private ProductResponseDTO convertToDTO(Product product) {
         return ProductResponseDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = productRepository.findAll();
 
             return products.stream()
-                    .map(this::convertToResponseDTO)
+                    .map(this::convertToDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new OperationException("Error occurred while fetching products");
@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
             Product savedProduct = productRepository.save(product);
 
-            return convertToResponseDTO(savedProduct);
+            return convertToDTO(savedProduct);
         } catch (Exception e) {
             throw new OperationException("Error occurred while creating product");
         }
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
             Product product = productRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-            return convertToResponseDTO(product);
+            return convertToDTO(product);
         } catch (ResourceNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class ProductServiceImpl implements ProductService {
 
             Product updatedProduct = productRepository.save(product);
 
-            return convertToResponseDTO(updatedProduct);
+            return convertToDTO(updatedProduct);
         } catch (ResourceNotFoundException e) {
             throw e;
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = productRepository.findAllByCategoryId(id);
 
             return products.stream()
-                    .map(this::convertToResponseDTO)
+                    .map(this::convertToDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new OperationException("Error occurred while fetching products by category with id: " + id);
@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = productRepository.findAllByNameContainingIgnoreCase(query);
 
             return products.stream()
-                    .map(this::convertToResponseDTO)
+                    .map(this::convertToDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new OperationException("Error occurred while searching products with query: " + query);
@@ -160,7 +160,7 @@ public class ProductServiceImpl implements ProductService {
             List<Product> products = productRepository.findAllByPromotionGreaterThan(0);
 
             return products.stream()
-                    .map(this::convertToResponseDTO)
+                    .map(this::convertToDTO)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new OperationException("Error occurred while fetching promotion products");

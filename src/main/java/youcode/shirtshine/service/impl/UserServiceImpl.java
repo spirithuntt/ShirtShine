@@ -7,10 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Role;
 import youcode.shirtshine.domain.User;
+import youcode.shirtshine.exceptionHandler.OperationException;
 import youcode.shirtshine.repository.RoleRepository;
 import youcode.shirtshine.repository.UserRepository;
 import youcode.shirtshine.service.UserService;
-import youcode.shirtshine.handler.request.CustomException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user);
                 return role;
             }
-            throw new CustomException("Role or user not found", HttpStatus.NOT_FOUND);
-        }throw new CustomException("Insufficient authorities", HttpStatus.UNAUTHORIZED);
+            throw new OperationException("Role or user not found");
+        }throw new OperationException("You are not authorized to perform this action");
     }
 
     @Override
