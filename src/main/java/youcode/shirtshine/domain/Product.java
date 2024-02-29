@@ -21,7 +21,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
     private Integer stock;
     private Integer promotion;
     private String image;
@@ -34,7 +34,7 @@ public class Product {
     @ManyToMany
     private List<Cart> carts;
 
-    @ManyToOne
+    @ManyToOne()
     private Category category;
 
 
