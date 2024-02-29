@@ -127,4 +127,44 @@ public class ProductServiceImpl implements ProductService {
             throw new OperationException("Error occurred while deleting product with id: " + id);
         }
     }
+
+    @Override
+    public List<ProductResponseDTO> getProductsByCategory(Long id) {
+        try {
+            List<Product> products = productRepository.findAllByCategoryId(id);
+
+            return products.stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new OperationException("Error occurred while fetching products by category with id: " + id);
+        }
+    }
+
+    @Override
+    public List<ProductResponseDTO> searchProducts(String query) {
+        try {
+            List<Product> products = productRepository.findAllByNameContainingIgnoreCase(query);
+
+            return products.stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new OperationException("Error occurred while searching products with query: " + query);
+        }
+    }
+
+    @Override
+    public List<ProductResponseDTO> getPromotionProducts() {
+        try {
+            List<Product> products = productRepository.findAllByPromotionGreaterThan(0);
+
+            return products.stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new OperationException("Error occurred while fetching promotion products");
+        }
+    }
+
 }
