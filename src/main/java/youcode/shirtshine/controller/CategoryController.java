@@ -1,5 +1,6 @@
 package youcode.shirtshine.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,18 +8,14 @@ import youcode.shirtshine.dto.request.CategoryRequestDTO;
 import youcode.shirtshine.dto.response.CategoryResponseDTO;
 import youcode.shirtshine.exceptionHandler.OperationException;
 import youcode.shirtshine.service.CategoryService;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryController {
 
     private final CategoryService categoryService;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {

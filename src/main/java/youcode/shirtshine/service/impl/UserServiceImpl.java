@@ -1,9 +1,9 @@
 package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import youcode.shirtshine.domain.Role;
 import youcode.shirtshine.domain.User;
@@ -38,6 +38,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getById(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            return userRepository.findByEmail(username).orElse(null);
+        }
+
+        return null;
     }
 
 
