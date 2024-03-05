@@ -24,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryResponseDTO.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .type(category.getType())
                 .build();
     }
 
@@ -58,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category category = new Category();
             category.setName(categoryRequestDTO.getName());
-            category.setType(categoryRequestDTO.getType());
             Category savedCategory = categoryRepository.save(category);
             return convertToDto(savedCategory);
         } catch (Exception e) {
@@ -72,7 +70,6 @@ public class CategoryServiceImpl implements CategoryService {
             Category category = categoryRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
             category.setName(categoryRequestDTO.getName());
-            category.setType(categoryRequestDTO.getType());
             Category updatedCategory = categoryRepository.save(category);
             return convertToDto(updatedCategory);
         } catch (ResourceNotFoundException e) {

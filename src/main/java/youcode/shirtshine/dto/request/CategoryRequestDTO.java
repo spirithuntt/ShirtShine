@@ -8,5 +8,4 @@ import lombok.*;
 @NoArgsConstructor
 public class CategoryRequestDTO {
     private String name;
-    private Integer type;
 }
