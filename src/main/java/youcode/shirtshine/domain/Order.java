@@ -39,6 +39,6 @@ public class Order {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private StatusEnum status;
+    private StatusEnum status = StatusEnum.PENDING;
 
 }
