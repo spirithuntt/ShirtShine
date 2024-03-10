@@ -1,5 +1,7 @@
 package youcode.shirtshine.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,11 +12,11 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +35,7 @@ public class Product {
 
     @ManyToMany
     private List<Cart> carts;
+
 
     @ManyToOne()
     private Category category;

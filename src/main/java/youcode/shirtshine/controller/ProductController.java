@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO product) {
+    public ResponseEntity<ProductResponseDTO> createProduct(@ModelAttribute ProductRequestDTO product) {
         try {
             ProductResponseDTO productResponseDTO = productService.createProduct(product);
             return new ResponseEntity<>(productResponseDTO, HttpStatus.CREATED);
@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDTO product) {
         try {
             ProductResponseDTO productResponseDTO = productService.updateProduct(id, product);
             return new ResponseEntity<>(productResponseDTO, HttpStatus.OK);

@@ -2,6 +2,7 @@ package youcode.shirtshine.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import youcode.shirtshine.domain.Category;
 import youcode.shirtshine.domain.Product;
 import youcode.shirtshine.dto.request.ProductRequestDTO;
@@ -12,7 +13,15 @@ import youcode.shirtshine.repository.CategoryRepository;
 import youcode.shirtshine.repository.ProductRepository;
 import youcode.shirtshine.service.ProductService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,11 +65,20 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
+            String fileName;
+            if (productRequestDTO.getImage().isEmpty()) {
+                fileName = "default.jpg"; // set a default image
+            } else {
+                fileName = StringUtils.cleanPath(Objects.requireNonNull(productRequestDTO.getImage().getOriginalFilename()));
+                Path path = Paths.get("src/main/resources/static/images");
+                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            }
+
             Product product = Product.builder()
                     .name(productRequestDTO.getName())
                     .description(productRequestDTO.getDescription())
                     .price(productRequestDTO.getPrice())
-                    .image(productRequestDTO.getImage())
+                    .image(fileName)
                     .stock(productRequestDTO.getStock())
                     .promotion(productRequestDTO.getPromotion())
                     .created_at(productRequestDTO.getCreated_at())
@@ -99,10 +117,20 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
+            String fileName;
+            if (productRequestDTO.getImage().isEmpty()) {
+                fileName = product.getImage(); // keep the old image
+            } else {
+                fileName = StringUtils.cleanPath(productRequestDTO.getImage().getOriginalFilename());
+                Path path = Paths.get("src/main/resources/static/images");
+                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            }
+
+
             product.setName(productRequestDTO.getName());
             product.setDescription(productRequestDTO.getDescription());
             product.setPrice(productRequestDTO.getPrice());
-            product.setImage(productRequestDTO.getImage());
+            product.setImage(fileName);
             product.setStock(productRequestDTO.getStock());
             product.setPromotion(productRequestDTO.getPromotion());
             product.setCreated_at(productRequestDTO.getCreated_at());

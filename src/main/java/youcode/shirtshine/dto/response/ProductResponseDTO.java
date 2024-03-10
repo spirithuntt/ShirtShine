@@ -24,7 +24,4 @@ public class ProductResponseDTO {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-
-
-
 }
