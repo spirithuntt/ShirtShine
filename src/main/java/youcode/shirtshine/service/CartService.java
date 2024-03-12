@@ -11,6 +11,10 @@ public interface CartService {
 
     CartResponseDTO removeProductFromCart(Long productId);
 
+    CartResponseDTO updateProductQuantityInCart(Long productId, int newQuantity);
+
+    Double calculateTotalPrice();
+
     CartResponseDTO getCart();
 
     void clearCart();

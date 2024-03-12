@@ -16,7 +16,8 @@ public class ProductRequestDTO {
     private String name;
     private String description;
     private Double price;
-    private MultipartFile image;
+//    private MultipartFile image;
+    private String image;
     private Integer stock;
     private Integer promotion;
     private LocalDateTime created_at;

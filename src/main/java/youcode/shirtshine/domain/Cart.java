@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
 @Builder
 @Getter
@@ -19,8 +18,6 @@ public class Cart{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Integer quantity;
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -31,8 +28,8 @@ public class Cart{
     @OneToOne
     private User user;
 
-    @ManyToMany
-    private List<Product> products;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems;
 
 
 

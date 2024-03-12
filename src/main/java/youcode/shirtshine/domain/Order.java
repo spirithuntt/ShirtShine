@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Data
 @AllArgsConstructor
 @Builder
 @Getter

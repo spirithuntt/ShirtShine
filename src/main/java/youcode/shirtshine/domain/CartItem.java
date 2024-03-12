@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -17,21 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class OrderItem {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer total;
     private Integer quantity;
-    @CreationTimestamp
-    private LocalDateTime created_at;
-    @UpdateTimestamp
-    private LocalDateTime updated_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Product product;
 
     @ManyToOne
-    private Order order;
-
+    private Cart cart;
 }

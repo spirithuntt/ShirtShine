@@ -1,6 +1,8 @@
 package youcode.shirtshine.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,18 +35,16 @@ public class Product {
     private LocalDateTime updated_at;
 
 
-    @ManyToMany
-    private List<Cart> carts;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
+    private List<CartItem> cartItems;
 
 
     @ManyToOne()
     private Category category;
 
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,  fetch=FetchType.LAZY)
     private List<OrderItem> orderItems;
-
-
-
 
 }

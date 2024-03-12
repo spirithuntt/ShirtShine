@@ -65,20 +65,21 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
-            String fileName;
-            if (productRequestDTO.getImage().isEmpty()) {
-                fileName = "default.jpg"; // set a default image
-            } else {
-                fileName = StringUtils.cleanPath(Objects.requireNonNull(productRequestDTO.getImage().getOriginalFilename()));
-                Path path = Paths.get("src/main/resources/static/images");
-                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-            }
+//            String fileName;
+//            if (productRequestDTO.getImage().isEmpty()) {
+//                fileName = "default.jpg"; // set a default image
+//            } else {
+//                fileName = StringUtils.cleanPath(Objects.requireNonNull(productRequestDTO.getImage().getOriginalFilename()));
+//                Path path = Paths.get("src/main/resources/static/images");
+//                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+//            }
 
             Product product = Product.builder()
                     .name(productRequestDTO.getName())
                     .description(productRequestDTO.getDescription())
                     .price(productRequestDTO.getPrice())
-                    .image(fileName)
+//                    .image(fileName)
+                    .image(productRequestDTO.getImage())
                     .stock(productRequestDTO.getStock())
                     .promotion(productRequestDTO.getPromotion())
                     .created_at(productRequestDTO.getCreated_at())
@@ -117,20 +118,21 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
-            String fileName;
-            if (productRequestDTO.getImage().isEmpty()) {
-                fileName = product.getImage(); // keep the old image
-            } else {
-                fileName = StringUtils.cleanPath(productRequestDTO.getImage().getOriginalFilename());
-                Path path = Paths.get("src/main/resources/static/images");
-                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-            }
+//            String fileName;
+//            if (productRequestDTO.getImage().isEmpty()) {
+//                fileName = product.getImage(); // keep the old image
+//            } else {
+//                fileName = StringUtils.cleanPath(productRequestDTO.getImage().getOriginalFilename());
+//                Path path = Paths.get("src/main/resources/static/images");
+//                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+//            }
 
 
             product.setName(productRequestDTO.getName());
             product.setDescription(productRequestDTO.getDescription());
             product.setPrice(productRequestDTO.getPrice());
-            product.setImage(fileName);
+//            product.setImage(fileName);
+            product.setImage(productRequestDTO.getImage());
             product.setStock(productRequestDTO.getStock());
             product.setPromotion(productRequestDTO.getPromotion());
             product.setCreated_at(productRequestDTO.getCreated_at());

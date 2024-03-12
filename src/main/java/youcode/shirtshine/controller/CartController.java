@@ -39,6 +39,16 @@ public class CartController {
         }
     }
 
+    @PostMapping("/update/{productId}/{quantity}")
+    public ResponseEntity<CartResponseDTO> updateProductQuantityInCart(@PathVariable Long productId, @PathVariable int quantity) {
+        try {
+            CartResponseDTO cart = cartService.updateProductQuantityInCart(productId, quantity);
+            return new ResponseEntity<>(cart, HttpStatus.OK);
+        } catch (OperationException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping
     public ResponseEntity<CartResponseDTO> getCart() {
         try {
@@ -54,6 +64,16 @@ public class CartController {
         try {
             cartService.clearCart();
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (OperationException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<Double> calculateTotalPrice() {
+        try {
+            Double totalPrice = cartService.calculateTotalPrice();
+            return new ResponseEntity<>(totalPrice, HttpStatus.OK);
         } catch (OperationException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
