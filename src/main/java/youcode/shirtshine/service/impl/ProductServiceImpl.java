@@ -10,6 +10,7 @@ import youcode.shirtshine.dto.response.ProductResponseDTO;
 import youcode.shirtshine.exceptionHandler.OperationException;
 import youcode.shirtshine.exceptionHandler.ResourceNotFoundException;
 import youcode.shirtshine.repository.CategoryRepository;
+
 import youcode.shirtshine.repository.ProductRepository;
 import youcode.shirtshine.service.ProductService;
 
@@ -31,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+
     private ProductResponseDTO convertToDTO(Product product) {
         return ProductResponseDTO.builder()
                 .id(product.getId())
@@ -40,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .image(product.getImage())
                 .stock(product.getStock())
+                //get quantity from cartItem
                 .promotion(product.getPromotion())
                 .created_at(product.getCreated_at())
                 .updated_at(product.getUpdated_at())
@@ -65,25 +68,23 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
-//            String fileName;
-//            if (productRequestDTO.getImage().isEmpty()) {
-//                fileName = "default.jpg"; // set a default image
-//            } else {
-//                fileName = StringUtils.cleanPath(Objects.requireNonNull(productRequestDTO.getImage().getOriginalFilename()));
-//                Path path = Paths.get("src/main/resources/static/images");
-//                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-//            }
+            String fileName;
+            if (productRequestDTO.getImage().isEmpty()) {
+                fileName = "default.jpg";
+            } else {
+                fileName = StringUtils.cleanPath(Objects.requireNonNull(productRequestDTO.getImage().getOriginalFilename()));
+                Path path = Path.of("src/main/resources/static/images");
+                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            }
 
             Product product = Product.builder()
                     .name(productRequestDTO.getName())
                     .description(productRequestDTO.getDescription())
                     .price(productRequestDTO.getPrice())
-//                    .image(fileName)
-                    .image(productRequestDTO.getImage())
+                    .image(fileName)
+                    .image("http://localhost:8080/images/"+ fileName)
                     .stock(productRequestDTO.getStock())
                     .promotion(productRequestDTO.getPromotion())
-                    .created_at(productRequestDTO.getCreated_at())
-                    .updated_at(productRequestDTO.getUpdated_at())
                     .category(category)
                     .build();
 
@@ -118,25 +119,23 @@ public class ProductServiceImpl implements ProductService {
             Category category = categoryRepository.findById(productRequestDTO.getCategory_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productRequestDTO.getCategory_id()));
 
-//            String fileName;
-//            if (productRequestDTO.getImage().isEmpty()) {
-//                fileName = product.getImage(); // keep the old image
-//            } else {
-//                fileName = StringUtils.cleanPath(productRequestDTO.getImage().getOriginalFilename());
-//                Path path = Paths.get("src/main/resources/static/images");
-//                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-//            }
+            String fileName;
+            if (productRequestDTO.getImage().isEmpty()) {
+                fileName = product.getImage();
+            } else {
+                fileName = StringUtils.cleanPath(productRequestDTO.getImage().getOriginalFilename());
+                Path path = Paths.get("src/main/resources/static/images");
+                Files.copy(productRequestDTO.getImage().getInputStream(), path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+            }
 
 
             product.setName(productRequestDTO.getName());
             product.setDescription(productRequestDTO.getDescription());
             product.setPrice(productRequestDTO.getPrice());
-//            product.setImage(fileName);
-            product.setImage(productRequestDTO.getImage());
+            product.setImage(fileName);
+//            product.setImage(productRequestDTO.getImage());
             product.setStock(productRequestDTO.getStock());
             product.setPromotion(productRequestDTO.getPromotion());
-            product.setCreated_at(productRequestDTO.getCreated_at());
-            product.setUpdated_at(productRequestDTO.getUpdated_at());
             product.setCategory(category);
 
             Product updatedProduct = productRepository.save(product);

@@ -28,8 +28,8 @@ public class ProductController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@ModelAttribute ProductRequestDTO product) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<ProductResponseDTO> createProduct(ProductRequestDTO product) {
         try {
             ProductResponseDTO productResponseDTO = productService.createProduct(product);
             return new ResponseEntity<>(productResponseDTO, HttpStatus.CREATED);

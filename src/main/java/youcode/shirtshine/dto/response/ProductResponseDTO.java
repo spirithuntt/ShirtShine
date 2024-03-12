@@ -23,5 +23,5 @@ public class ProductResponseDTO {
     private Integer promotion;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-
+    private Integer quantity;
 }

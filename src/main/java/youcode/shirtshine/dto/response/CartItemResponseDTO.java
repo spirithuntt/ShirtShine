@@ -17,4 +17,6 @@ public class CartItemResponseDTO {
     private String productName;
     private Double price;
     private String image;
+    private Double productTotalPrice;
+    private Integer promotion;
 }

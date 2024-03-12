@@ -35,8 +35,14 @@ public class CartServiceImpl implements CartService {
                                 .quantity(cartItem.getQuantity())
                                 .image(cartItem.getProduct().getImage())
                                 .price(cartItem.getProduct().getPrice())
+                                .productTotalPrice(calculateTotalPriceForOneProduct(cartItem.getProduct().getId()))
+                                .promotion(cartItem.getProduct().getPromotion())
                                 .build())
                         .toList())
+                .totalPrice(calculateTotalPrice())
+                .totalPriceWithPromotion(calculateTotalPriceWithPromotion())
+
+
                 .build();
     }
     private Cart convertToEntity(CartResponseDTO cartResponseDTO) {
@@ -106,6 +112,33 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public Double calculateTotalPriceForOneProduct(Long productId) {
+        User user = userService.getCurrentUser();
+        Cart cart = user.getCart();
+        if (cart == null) {
+            return 0.0;
+        }
+        return cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity() * (1 - item.getProduct().getPromotion() / 100.0))
+                .sum();
+    }
+
+
+    @Override
+    public Double calculateTotalPriceWithPromotion() {
+        User user = userService.getCurrentUser();
+        Cart cart = user.getCart();
+        if (cart == null) {
+            return 0.0;
+        }
+        return cart.getCartItems().stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity() * (1 - item.getProduct().getPromotion() / 100.0))
+                .sum();
+    }
+
+
+    @Override
     public CartResponseDTO updateProductQuantityInCart(Long productId, int newQuantity) {
         User user = userService.getCurrentUser();
         Cart cart = user.getCart();
@@ -127,17 +160,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Double calculateTotalPrice() {
-        User user = userService.getCurrentUser();
-        Cart cart = user.getCart();
-        if (cart == null) {
-            return 0.0;
-        }
-        return cart.getCartItems().stream()
-                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
-                .sum();
+    User user = userService.getCurrentUser();
+    Cart cart = user.getCart();
+     if (cart == null) {
+         return 0.0;
+     }
+     return cart.getCartItems().stream()
+             .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()) .sum();
     }
-
-
 
     @Override
     public CartResponseDTO getCart() {

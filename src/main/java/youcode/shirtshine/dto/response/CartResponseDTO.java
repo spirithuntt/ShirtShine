@@ -14,5 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartResponseDTO {
+    private Double totalPrice;
+    private Double totalPriceWithPromotion;
     private List<CartItemResponseDTO> cartItems;
 }
