@@ -79,4 +79,14 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/checkout")
+    public ResponseEntity<OrderResponseDTO> completeCheckout(@RequestBody OrderRequestDTO order) {
+        try {
+            OrderResponseDTO orderResponseDTO = orderService.completeCheckout(order);
+            return new ResponseEntity<>(orderResponseDTO, HttpStatus.CREATED);
+        } catch (OperationException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

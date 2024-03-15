@@ -18,7 +18,4 @@ public class OrderRequestDTO {
     private String phone;
     private Integer zipCode;
     private String address;
-    private List<OrderItemRequestDTO> orderItems;
-    private StatusEnum status;
-
 }

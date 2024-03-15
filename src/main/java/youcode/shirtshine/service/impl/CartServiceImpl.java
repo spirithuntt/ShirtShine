@@ -87,7 +87,6 @@ public class CartServiceImpl implements CartService {
             }
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
-        product.setStock(product.getStock() - quantity);
         productRepository.save(product);
         return convertToDto(cart);
     }

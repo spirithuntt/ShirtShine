@@ -20,4 +20,6 @@ public interface OrderService {
     OrderResponseDTO updateOrderStatus(Long id, String status);
 
     void deleteOrder(Long id);
+
+    OrderResponseDTO completeCheckout(OrderRequestDTO orderRequestDTO);
 }

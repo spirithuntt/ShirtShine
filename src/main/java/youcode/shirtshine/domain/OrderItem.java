@@ -21,7 +21,7 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer total;
+    private Double total;
     private Integer quantity;
     @CreationTimestamp
     private LocalDateTime created_at;
