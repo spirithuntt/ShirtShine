@@ -175,4 +175,17 @@ public class OrderServiceImpl implements OrderService {
             throw new OperationException("Error occurred while completing checkout");
         }
     }
+
+    @Override
+    public List<OrderResponseDTO> getOrdersByUser() {
+        try {
+            User user = userService.getCurrentUser();
+            List<Order> orders = orderRepository.findByUser(user);
+            return orders.stream()
+                    .map(this::convertToDto)
+                    .toList();
+        } catch (Exception e) {
+            throw new OperationException("Error occurred while fetching orders");
+        }
+    }
 }

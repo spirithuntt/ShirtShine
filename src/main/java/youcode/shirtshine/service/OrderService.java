@@ -22,4 +22,6 @@ public interface OrderService {
     void deleteOrder(Long id);
 
     OrderResponseDTO completeCheckout(OrderRequestDTO orderRequestDTO);
+
+    List<OrderResponseDTO> getOrdersByUser();
 }

@@ -100,11 +100,7 @@ public class CartServiceImpl implements CartService {
                 .findFirst()
                 .orElse(null);
         if (cartItem != null) {
-            if (cartItem.getQuantity() > 1) {
-                cartItem.setQuantity(cartItem.getQuantity() - 1);
-            } else {
                 cart.getCartItems().remove(cartItem);
-            }
         }
         cartRepository.save(cart);
         return convertToDto(cart);

@@ -89,4 +89,14 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByUser() {
+        try {
+            List<OrderResponseDTO> orders = orderService.getOrdersByUser();
+            return new ResponseEntity<>(orders, HttpStatus.OK);
+        } catch (OperationException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

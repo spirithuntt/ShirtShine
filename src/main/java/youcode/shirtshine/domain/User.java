@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @ManyToOne
     private Role role;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
