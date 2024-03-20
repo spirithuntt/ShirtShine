@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
                     .name(productRequestDTO.getName())
                     .description(productRequestDTO.getDescription())
                     .price(productRequestDTO.getPrice())
-                    .image(fileName)
+//                    .image(fileName)
                     .image("http://localhost:8080/images/"+ fileName)
                     .stock(productRequestDTO.getStock())
                     .promotion(productRequestDTO.getPromotion())
@@ -132,8 +132,9 @@ public class ProductServiceImpl implements ProductService {
             product.setName(productRequestDTO.getName());
             product.setDescription(productRequestDTO.getDescription());
             product.setPrice(productRequestDTO.getPrice());
-            product.setImage(fileName);
+//            product.setImage(fileName);
 //            product.setImage(productRequestDTO.getImage());
+            product.setImage("http://localhost:8080/images/"+ fileName);
             product.setStock(productRequestDTO.getStock());
             product.setPromotion(productRequestDTO.getPromotion());
             product.setCategory(category);
