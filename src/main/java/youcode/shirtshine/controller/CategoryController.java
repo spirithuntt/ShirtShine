@@ -3,6 +3,7 @@ package youcode.shirtshine.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import youcode.shirtshine.dto.request.CategoryRequestDTO;
 import youcode.shirtshine.dto.response.CategoryResponseDTO;
@@ -37,6 +38,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_CATEGORIES')")
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody CategoryRequestDTO category) {
         try {
@@ -47,6 +49,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_CATEGORIES')")
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO category) {
         try {
@@ -57,6 +60,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_CATEGORIES')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         try {

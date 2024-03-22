@@ -10,7 +10,9 @@ import youcode.shirtshine.repository.RoleRepository;
 import youcode.shirtshine.service.AuthorityService;
 import youcode.shirtshine.service.RoleService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -32,18 +34,12 @@ public class RoleSeeder implements CommandLineRunner {
         Authority viewRoles = authorityService.getByName(AuthorityEnum.VIEW_ROLES)
                 .orElseThrow(() -> new RuntimeException("VIEW_ROLES authority not found"));
 
-        Authority createRole = authorityService.getByName(AuthorityEnum.CREATE_ROLE)
-                .orElseThrow(() -> new RuntimeException("CREATE_ROLE authority not found"));
+        //? admin roles
+        Authority manageOrders = authorityService.getByName(AuthorityEnum.MANAGE_ORDERS)
+                .orElseThrow(() -> new RuntimeException("MANAGE_ORDERS authority not found"));
+        Authority manageProducts = authorityService.getByName(AuthorityEnum.MANAGE_PRODUCTS)
+                .orElseThrow(() -> new RuntimeException("MANAGE_PRODUCTS authority not found"));
 
-        Authority viewUsers = authorityService.getByName(AuthorityEnum.VIEW_USERS)
-                .orElseThrow(() -> new RuntimeException("VIEW_USERS authority not found"));
-        Authority grantAuthorityToRole = authorityService.getByName(AuthorityEnum.GRANT_AUTHORITY_TO_ROLE)
-                .orElseThrow(() -> new RuntimeException("GRANT_AUTHORITY_TO_ROLE authority not found"));
-        Authority revokeAuthorityFromRole = authorityService.getByName(AuthorityEnum.REVOKE_AUTHORITY_FROM_ROLE)
-                .orElseThrow(() -> new RuntimeException("REVOKE_AUTHORITY_FROM_ROLE authority not found"));
-
-        Authority deleteRole = authorityService.getByName(AuthorityEnum.DELETE_ROLE)
-                .orElseThrow(() -> new RuntimeException("DELETE_ROLE authority not found"));
 
         //? Create roles and associate authorities
         Role userRole = Role.builder()
@@ -53,17 +49,27 @@ public class RoleSeeder implements CommandLineRunner {
 
         Role adminRole = Role.builder()
                 .name("ADMIN")
-                .authorities(Arrays.asList(viewRoles, viewUsers))
+                .authorities(Arrays.asList(viewRoles, manageOrders, manageProducts))
                 .build();
 
         Role superAdminRole = Role.builder()
                 .name("SUPER_ADMIN")
-                .authorities(Arrays.asList(viewRoles, createRole, grantAuthorityToRole, revokeAuthorityFromRole, viewUsers, deleteRole))
+                .authorities(getAllAuthorities())
                 .build();
 
         roleService.save(userRole, true);
         roleService.save(adminRole, true);
         roleService.save(superAdminRole, true);
+    }
+
+    private List<Authority> getAllAuthorities() {
+        List<Authority> authorities = new ArrayList<>();
+        for (AuthorityEnum authorityEnum : AuthorityEnum.values()) {
+            Authority authority = authorityService.getByName(authorityEnum)
+                    .orElseThrow(() -> new RuntimeException(authorityEnum + " authority not found"));
+            authorities.add(authority);
+        }
+        return authorities;
     }
 
 }

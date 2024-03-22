@@ -4,6 +4,7 @@ import ch.qos.logback.core.status.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import youcode.shirtshine.dto.request.OrderRequestDTO;
 import youcode.shirtshine.dto.response.OrderResponseDTO;
@@ -39,6 +40,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ORDERS')")
     @PostMapping
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO order) {
         try {
@@ -49,6 +51,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ORDERS')")
     @PutMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO order) {
         try {
@@ -59,6 +62,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ORDERS')")
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateOrderStatus(@PathVariable Long id, @RequestBody String status) {
         try {
@@ -69,6 +73,7 @@ public class OrderController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_ORDERS')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         try {

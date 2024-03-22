@@ -3,6 +3,7 @@ package youcode.shirtshine.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import youcode.shirtshine.dto.request.ProductRequestDTO;
 import youcode.shirtshine.dto.response.ProductResponseDTO;
@@ -28,6 +29,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_PRODUCTS')")
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ProductResponseDTO> createProduct(ProductRequestDTO product) {
         try {
@@ -38,6 +40,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_PRODUCTS')")
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDTO product) {
         try {
@@ -48,6 +51,7 @@ public class ProductController {
         }
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_PRODUCTS')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         try {
